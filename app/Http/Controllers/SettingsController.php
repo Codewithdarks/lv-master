@@ -19,7 +19,9 @@ class SettingsController extends Controller
      * @return Application|Factory|View
      */
     public function CheckoutSettingsView() {
-        return view('pages.checkout-settings');
+        $why = StoreSettings::where(['option_for' => 'checkout_page'])->get();
+        $review = StoreSettings::where(['option_for' => 'checkout_page'])->get();
+        return view('pages.checkout-settings', compact('why', 'review'));
     }
 
     /**
@@ -321,12 +323,13 @@ class SettingsController extends Controller
         }
         return json_encode($data);
     }
+    // Checkout Page Content
 
     public function CheckOutOptionCreate(Request $request) {
         $this->validate($request, [
             'option_name' => 'string|required',
             'option_value' => 'string|required',
-            'option_for' => 'string|required'
+            'option_for' => 'required|string'
         ]);
         $create = StoreSettings::create([
            'option_name' => $request['option_name'],
@@ -334,13 +337,12 @@ class SettingsController extends Controller
            'option_for' => $request['option_for'],
         ]);
         if ($create != null){
-            return redirect()->back()->with('success', 'Created Successfully');
+            return redirect()->route('checkout.list')->with('success', 'Created Successfully');
         }
         return redirect()->back()-with('error', 'Failed to Create');
     }
-
     public function CheckoutOptionlist() {
-        $display = StoreSettings::all();
+        $display = StoreSettings::where(['option_for' => 'checkout_page_why'])->orWhere(['option_for' => 'checkout_page_review'])->get();
         return view('pages.checkout-option-list', compact('display'));
     }
     public function CheckoutOptionEdit($id) {
@@ -354,16 +356,16 @@ class SettingsController extends Controller
         $this->validate($request, [
             'option_name' => 'string|required',
             'option_value' => 'string|required',
-            'option_for' => 'string|required'
+            'option_for' => 'required|string'
         ]);
         $check = StoreSettings::find($id);
         $create = $check->update([
-            'option_name' => $request['option_name'],
-            'option_value' => $request['option_value'],
-            'option_for' => $request['option_for'],
+            'option_name' => $request['option_name'] ?? $check->option_name,
+            'option_value' => $request['option_value'] ?? $check->option_value,
+            'option_for' => $request['option_for'] ?? $check->option_for,
         ]);
         if ($create != null){
-            return redirect()->back()->with('success', 'Created Successfully');
+            return redirect()->route('checkout.list')->with('success', 'Created Successfully');
         }
         return redirect()->back()-with('error', 'Failed to Create');
     }
@@ -374,6 +376,28 @@ class SettingsController extends Controller
             return redirect()->back()->with('error','Failed to delete');
         }
         return redirect()->back()->with('success', 'Deleted Successfully');
+    }
+    // Checkout Page Why Choose Us
+
+    public function WhyChooseUsCreate(Request $request) {
+        $this->validate($request, [
+            'title' => 'required|string',
+            'image' => 'required|string',
+            'description' => 'required|string',
+            'option_name' => 'required|string'
+        ]);
+        $data = array(
+            'title' => $request['title'],
+            'image' => $request['image'],
+            'description' => $request['description']
+        );
+        $create = StoreSettings::create([
+            'option_name' => $request['option_name'],
+            'option_value' => json_encode($data),
+            'option_for' => 'checkout_page'
+        ]);
+        return redirect()->route('checkout.settings')->with('success', 'Stored Successfully');
+
     }
 
 

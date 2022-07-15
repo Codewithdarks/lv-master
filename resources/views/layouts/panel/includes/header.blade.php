@@ -11,8 +11,7 @@
 
                 <li><a href="{{ route('upsellfunnels') }}" class="nav-link {{ Request::routeIs('upsellfunnels.*') ? 'active' : '' }}{{ Request::is('upsellfunnel*') ? 'active' : '' }} ">Upsell Funnels</a></li>
                <li><a href="{{ route('builder.listing') }}" class="nav-link {{ Request::routeIs('builder.listing') ? 'active' : '' }}{{ Request::is('builder.listing') ? 'active' : '' }}">Pages</a></li>
-
-
+                <li><a href="{{ route('checkout.list') }}" class="nav-link {{ Request::routeIs('checkout.list') ? 'active' : '' }}{{ Request::is('checkout.list') ? 'active' : '' }}">Checkout Option</a></li>
             </ul>
 
             <!-- <div class="quick-link text-center text-lg-start col-12 col-lg-auto mb-2 mb-lg-0 me-lg-3">

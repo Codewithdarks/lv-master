@@ -177,7 +177,13 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+    ],
 
+    // config/services.php
+
+    'urlbox' => [
+        'key'    => env('URLBOX_KEY'),
+        'secret' => env('URLBOX_SECRET')
     ],
 
     /*

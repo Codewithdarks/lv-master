@@ -8,6 +8,7 @@ use App\Models\PageBuilder;
 use App\Models\Upsellfunnels;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Spatie\Browsershot\Browsershot;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 
@@ -125,6 +126,7 @@ class BuilderController extends Controller
         $data = PageBuilder::find(decrypt($file));
         $status = $data->update(['html' => $html]);
         if ($status) {
+            Browsershot::url(route('get.content', $data->id))->setOption('portrait', true)->windowSize(720, 1260)->waitUntilNetworkIdle()->save(public_path('assets/pages/'.$data->id.'.jpg'));
             return response('Saved Successfully.', 200);
         } else {
             return response('Something Went Wrong.', 500);

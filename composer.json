@@ -16,6 +16,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
+        "spatie/browsershot": "^3.57",
         "stripe/stripe-php": "^7.121",
         "yajra/laravel-datatables-oracle": "^9.19"
     },

@@ -53,7 +53,7 @@ class ApiController extends Controller
         }
         return response($response);
     }
-	
+
 	public function GetThankyouCredentials(Request $request) {
         $key = $request->header('Authorization');
         if ($this->AuthenticateToken($key) !== true) {
@@ -87,7 +87,7 @@ class ApiController extends Controller
 		if ($validate->fails()) {
             return response($validate->messages());
         }
-		
+
 		$orders = orders::where(['id' => $request['id']])->get()->first();
 		return $orders;
 		}
@@ -119,7 +119,7 @@ class ApiController extends Controller
         if ($validate->fails()) {
             return response($validate->messages());
         }
-		
+
 		$stripetoken = $request['token'];
 		$keys = PaymentGateways::where(['gateway_name' => 'stripe'])->get()->first();
         if ($keys !== null) {
@@ -132,7 +132,7 @@ class ApiController extends Controller
         } else {
             $stripesecretkey ='';
         }
-		
+
 
 		Stripe\Stripe::setApiKey($stripesecretkey);
 		$charge = Stripe\Charge::create ([
@@ -141,7 +141,7 @@ class ApiController extends Controller
                 "source" =>$stripetoken,
                 "description" => "Payment from onepage checkout",
         ]);
-		
+
 		//return $charge;
 		if($charge['status'] == 'paid') {
 			$data = array(
@@ -159,9 +159,9 @@ class ApiController extends Controller
             'payment_gateway' => $request['payment_gateway'],
 			'shopify_customerid'=>$request['shopify_customerid'],
         );
-        
+
 		$insertorder = orders::create($data);
-		
+
 		$paydata = array("transaction_id" => $charge['id'],
 		"payment_status" => $charge['status'],
 		"gateway_response" => $charge,
@@ -186,10 +186,10 @@ class ApiController extends Controller
 				'response' => 'Payment failed!'
 			 );
 		}
-        
+
         return response($response);
     }
-	
+
 	public function UpdateOrderInDB(Request $request) {
         $key = $request->header('Authorization');
         if ($this->AuthenticateToken($key) !== true) {
@@ -219,7 +219,7 @@ class ApiController extends Controller
         );
         $updateorder = orders::find($request['id'])->update($data);
 		//$update = $findorder->update($data);
-		
+
 		$response = array(
             'status' => true,
             'response' => 'Order Update Successfully!',
@@ -230,11 +230,11 @@ class ApiController extends Controller
                 'response' => 'Order Update Failed!'
             );
         }
-		
+
         return response($response);
     }
-	
-	
+
+
 	/**
      * Returning Country Information Through Get Request.
      *
@@ -300,14 +300,14 @@ class ApiController extends Controller
         }
         return true;
     }
-	
+
 	/**
      * Verify Shopify Webhook.
      *
      * @param $token
      * @return bool
      */
-	
+
 	private function VerifyShopifyWebhook($data, $hmac_header){
 	  $calculated_hmac = base64_encode(hash_hmac('sha256', $data, env('SHOPIFY_APP_SECRET'), true));
 	  return hash_equals($hmac_header, $calculated_hmac);
@@ -320,7 +320,7 @@ class ApiController extends Controller
      * @return Application|ResponseFactory|Response
      */
     public function SingleupdnsellResponse(Request $request){
-        
+
         $key = $request->header('Authorization');
         if ($this->AuthenticateToken($key) !== true) {
             $response = array(
@@ -329,7 +329,7 @@ class ApiController extends Controller
             );
             return response($response);
         }
-        
+
         $validate = Validator::make($request->all(), [
             'id' => 'required|string',
             'type' => 'required|string'
@@ -337,7 +337,7 @@ class ApiController extends Controller
         if ($validate->fails()){
             return response($validate->messages(), 400);
         }
-        
+
         if($request['type']=='upsell'){
             $upselllid = Crypt::decrypt($request->id);
             //$states = Upsellfunnel_upsellproducts::where(['id' => $upselllid])->get(['upshopify_producthandle','updiscounttype','updiscountamount']);
@@ -354,11 +354,11 @@ class ApiController extends Controller
         }
         $shopify_storeurl = StoreSettings::where(['option_name' => 'shopify_main_domain'])->get(['option_value'])->first();
        $url = $shopify_storeurl['option_value'].'products/'.$producthandle.'.js';
-        
+
         $ans_ch = curl_init();
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
         curl_setopt($ans_ch, CURLOPT_URL, $url);
-        curl_setopt($ans_ch, CURLOPT_HTTPHEADER,array('Content-Type: application/json','User-Agent:'.$user_agent.''));	
+        curl_setopt($ans_ch, CURLOPT_HTTPHEADER,array('Content-Type: application/json','User-Agent:'.$user_agent.''));
         curl_setopt($ans_ch, CURLOPT_HEADER, true);
         curl_setopt($ans_ch, CURLOPT_RETURNTRANSFER, true);
         $result_get = curl_exec($ans_ch);
@@ -372,11 +372,11 @@ class ApiController extends Controller
          $result['productinfo'] = json_decode($body,true);
          $result['discountamount'] = $discountamount;
          $result['discounttype'] =  $discounttype;
-        
+
          if (isset($error_msg)) {
          $result['error_msg'] = $error_msg;
          }
-        
+
        $response = array(
            'status' => true,
            'response' => $result
@@ -392,7 +392,7 @@ class ApiController extends Controller
      */
     public function GetConfigSettings(Request $request){
         $key = $request->header('Authorization');
-        
+
         if ($this->AuthenticateToken($key) !== true) {
             $response = array(
                 'status' => false,
@@ -406,5 +406,5 @@ class ApiController extends Controller
             'response' => $allconfigs
         );
         return response($response, 200);
-    }  
+    }
 }

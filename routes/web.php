@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrowsershotController;
 use App\Http\Controllers\BuilderController;
 use App\Http\Controllers\GlobalCodeController;
 use App\Http\Controllers\OrdersController;
@@ -30,6 +31,8 @@ Auth::routes([
     'password.reset' => false,
     'password.request' => false,
 ]);
+Route::get('/test-screenshot', [BrowsershotController::class, 'screenshotGoogle']);
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/checkout-settings', [SettingsController::class, 'CheckoutSettingsView'])->name('checkout.settings');
@@ -77,10 +80,13 @@ Route::group(['middleware' => ['auth']], function () {
     #Checkout Options Routes
     Route::get('/checkout/option/create', function () {
         return view('pages.checkout-option-create');
-    });
+    })->name('checkout.new');
     Route::post('/checkout/option/submit', [SettingsController::class, 'CheckOutOptionCreate'])->name('checkout.option');
     Route::get('/checkout/option/list', [SettingsController::class, 'CheckoutOptionlist'])->name('checkout.list');
     Route::get('/checkout/option/edit/{id}', [SettingsController::class, 'CheckoutOptionEdit'])->name('checkout.edit');
     Route::Post('/checkout/option/update/{id}', [SettingsController::class, 'CheckoutOptionUpdate'])->name('checkout.update');
     Route::post('/checkout/option/delete/{id}', [SettingsController::class, 'CheckoutOptionDelete'])->name('checkout.delete');
+
+    # Why Choose Us
+    Route::post('/checkout/choose/us', [SettingsController::class, 'WhyChooseUsCreate'])->name('why.create');
 });
