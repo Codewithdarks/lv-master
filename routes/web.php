@@ -87,6 +87,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::Post('/checkout/option/update/{id}', [SettingsController::class, 'CheckoutOptionUpdate'])->name('checkout.update');
     Route::post('/checkout/option/delete/{id}', [SettingsController::class, 'CheckoutOptionDelete'])->name('checkout.delete');
 
-    # Why Choose Us
+    # Why Choose and Review Us
     Route::post('/checkout/choose/us', [SettingsController::class, 'WhyChooseUsCreate'])->name('why.create');
+    Route::post('/checkout/update/{id}', [SettingsController::class, 'WhyCooseUsUpdate'])->name('why.update');
+    Route::get('checkout/delete/{id}', [SettingsController::class, 'WhyChooseUsDelete'])->name('why.delete');
 });

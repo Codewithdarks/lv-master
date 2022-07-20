@@ -21,13 +21,27 @@ use Illuminate\Support\Facades\Crypt;
 class ApiController extends Controller
 {
     public function GetPaymentCredentials(Request $request) {
-        $key = $request->header('Authorization');
+        $key = $request->header('authorization');
         if ($this->AuthenticateToken($key) !== true) {
             $response = array(
                 'status' => false,
                 'response' => 'API key is invalid, please check and try again.'
             );
             return response($response);
+        }
+        $why_choose = array();
+        for ($i=1; $i < 5; $i++) {
+            $record = StoreSettings::where(['option_name' => 'choose-'.$i])->first();
+            if (!is_null($record) || !empty($record)) {
+                $why_choose[] = json_decode($record->option_value);
+            }
+        }
+        $review = array();
+        for ($i=1; $i < 5; $i++) {
+            $record = StoreSettings::where(['option_name' => 'review-'.$i])->first();
+            if (!is_null($record) || !empty($record)) {
+                $review[] = json_decode($record->option_value);
+            }
         }
         $response = array(
             'status' => true,
@@ -36,6 +50,8 @@ class ApiController extends Controller
             'checkout_code' => (new GlobalCodeController)->RetrieveCodeValue('checkout_page'),
 			'checkout_secure_logo' => (new SettingsController)->RetrieveValue('checkout_secure_logo'),
             'shipping_note' => (new SettingsController)->RetrieveValue('shipping_note'),
+            'why_choose' => $why_choose,
+            'review' => $review
         );
         $keys = PaymentGateways::where(['gateway_name' => 'stripe'])->get()->first();
         if ($keys !== null) {
@@ -189,7 +205,6 @@ class ApiController extends Controller
 
         return response($response);
     }
-
 	public function UpdateOrderInDB(Request $request) {
         $key = $request->header('Authorization');
         if ($this->AuthenticateToken($key) !== true) {
@@ -256,7 +271,6 @@ class ApiController extends Controller
             'response' => $countries
         );
         return response($response, 200);
-
     }
 
     /**

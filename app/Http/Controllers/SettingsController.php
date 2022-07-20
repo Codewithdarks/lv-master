@@ -118,9 +118,9 @@ class SettingsController extends Controller
             'shipping_country' => 'required|string',
         ]);
 
-
+        $data = 0;
         foreach ($data as $key=>$value) {
-
+            $data = StoreSettings::where();
             $exist = StoreSettings::where(['option_name' => $key])->get()->first();
             if ($exist !== null) {
                 $exist->update([
@@ -365,9 +365,9 @@ class SettingsController extends Controller
             'option_for' => $request['option_for'] ?? $check->option_for,
         ]);
         if ($create != null){
-            return redirect()->route('checkout.list')->with('success', 'Created Successfully');
+            return redirect()->route('checkout.list')->with('success', 'Updated Successfully');
         }
-        return redirect()->back()-with('error', 'Failed to Create');
+        return redirect()->back()-with('error', 'Failed to Update');
     }
     public function CheckoutOptionDelete($id){
         $check = StoreSettings::find($id);
@@ -399,6 +399,34 @@ class SettingsController extends Controller
         return redirect()->route('checkout.settings')->with('success', 'Stored Successfully');
 
     }
+    public function WhyCooseUsUpdate(Request $request, $id){
+        $id = StoreSettings::find($id);
+        $this->validate($request, [
+            'title' => 'required|string',
+            'image' => 'required|string',
+            'description' => 'required|string',
+            'option_name' => 'required|string'
+        ]);
+        $data = array(
+            'title' => $request['title'],
+            'image' => $request['image'],
+            'description' => $request['description']
+        );
+        $id->update([
+            'option_name' => $request['option_name'],
+            'option_value' => json_encode($data),
+        ]);
+        return redirect()->route('checkout.settings')->with('success', 'uUpdated Successfully');
+    }
+    public function WhyChooseUsDelete($id) {
+        $id = StoreSettings::find($id);
+        $delete = $id->delete();
+        if (!$delete){
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        }
+        return redirect()->back()->with('Failure', 'Failed To Delete');
+    }
+
 
 
 }
