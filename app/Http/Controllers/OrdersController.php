@@ -46,7 +46,8 @@ class OrdersController extends Controller
         $billing = json_decode($order['billing_address']);
         $shipping = json_decode($order['shipping_address']);
 		$discount = json_decode($order['discount']);
-        return view('pages.order-detail', compact('order', 'products', 'billing', 'shipping', 'discount'));
+        $payment_gateway = json_decode($order['payment_gateway']);
+        return view('pages.order-detail', compact('order', 'products', 'billing', 'shipping', 'discount', 'payment_gateway'));
     }
 
     private function DecrypOrderInfo($id) {

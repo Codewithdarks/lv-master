@@ -106,13 +106,7 @@
                                         </div>
                                         <div class="col-3 mb-3">
                                             <a href="{{ route('why.delete', $exist->id) }}" style="color:white;"  class="btn bg-danger">Delete</a>
-                                            <form action="{{ route('why.delete', $exist->id) }}" method="POST" id="delNum{{$exist}}">@csrf</form>
-                                            <script type="text/javascript">
-                                                document.getElementById('delkey{{ $exist }}').addEventListener('click',function (e){
-                                                    e.preventDefault();
-                                                    document.getElementById('delNum{{$exist}}').submit();
-                                                });
-                                            </script>
+                                            <form action="{{ route('why.delete', $exist->id) }}" method="POST">@csrf</form>
                                         </div>
                                     </div>
                                 </div>

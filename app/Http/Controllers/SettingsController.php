@@ -369,7 +369,7 @@ class SettingsController extends Controller
         }
         return redirect()->back()-with('error', 'Failed to Update');
     }
-    public function CheckoutOptionDelete($id){
+    public function CheckoutOptionDelete($id) {
         $check = StoreSettings::find($id);
         $delete = $check->delete();
         if ($delete !== true){
@@ -405,7 +405,6 @@ class SettingsController extends Controller
             'title' => 'required|string',
             'image' => 'required|string',
             'description' => 'required|string',
-            'option_name' => 'required|string'
         ]);
         $data = array(
             'title' => $request['title'],
@@ -413,10 +412,9 @@ class SettingsController extends Controller
             'description' => $request['description']
         );
         $id->update([
-            'option_name' => $request['option_name'],
             'option_value' => json_encode($data),
         ]);
-        return redirect()->route('checkout.settings')->with('success', 'uUpdated Successfully');
+        return redirect()->route('checkout.settings')->with('success', 'Updated Successfully');
     }
     public function WhyChooseUsDelete($id) {
         $id = StoreSettings::find($id);

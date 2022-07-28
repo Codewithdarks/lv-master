@@ -21,6 +21,10 @@
                                         <div class="badge rounded-pill bg-primary fs-6">{{ $order['orders_status'] }}</div>
                                     @endif
                                 </div>
+                               <div>
+                                   <strong class="me-2">Payment Method: </strong>
+                                   <div class="badge rounded-pill bg-primary fs-6">{{ $order['payment_gateway'] }}</div>
+                               </div>
                             </div>
                             <div class="col-6">
                                 <div><strong class="me-2">Fulfillment Status: </strong>

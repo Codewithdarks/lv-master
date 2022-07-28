@@ -25,6 +25,7 @@
                                 <th>Email</th>
                                 <th>Total</th>
                                 <th>Payment Status</th>
+                                <th>Payment Method</th>
                                 <th>Items</th>
                                 <th>Manage</th>
                             </tr>

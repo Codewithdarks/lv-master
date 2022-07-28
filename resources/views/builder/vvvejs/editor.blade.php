@@ -73,8 +73,7 @@
 
 
         <div class="btn-group me-3 float-end" role="group">
-            <button class="btn btn-primary btn-icon" title="Export (Ctrl + E)" id="save-btn"
-                    data-vvveb-action="saveAjax" data-vvveb-url="{{ route('save') }}" data-v-vvveb-shortcut="ctrl+e">
+            <button class="btn btn-primary btn-icon" title="Export (Ctrl + E)" id="save-btn" data-vvveb-action="saveAjax" data-vvveb-url="{{ route('save') }}" data-v-vvveb-shortcut="ctrl+e">
                 <i class="la la-save"></i> <span data-v-gettext>Save page</span>
             </button>&nbsp;&nbsp;&nbsp;
             <a href="{{ route('builder.listing') }}" class="btn btn-primary btn-icon" ><i class="la la-backward"></i> <span data-v-gettext>Close</span></a>

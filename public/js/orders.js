@@ -11,6 +11,7 @@ $(document).ready(function () {
                 {data: 'email', name: 'email'},
                 {data: 'total_price', name: 'total_price', render: $.fn.dataTable.render.number(',', '.', 2,'$')},
                 {data: 'orders_status', name: 'orders_status'},
+                {data: 'payment_gateway', name: 'payment_gateway'},
                 {data: 'items', name: 'items'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]

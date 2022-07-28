@@ -126,7 +126,6 @@ class BuilderController extends Controller
         $data = PageBuilder::find(decrypt($file));
         $status = $data->update(['html' => $html]);
         if ($status) {
-            Browsershot::url(route('get.content', $data->id))->setOption('portrait', true)->windowSize(720, 1260)->waitUntilNetworkIdle()->save(public_path('assets/pages/'.$data->id.'.jpg'));
             return response('Saved Successfully.', 200);
         } else {
             return response('Something Went Wrong.', 500);
